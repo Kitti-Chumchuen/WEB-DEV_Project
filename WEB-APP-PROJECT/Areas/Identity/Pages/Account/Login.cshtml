@@ -1,0 +1,57 @@
+﻿@page
+@model LoginModel
+
+@{
+    ViewData["Title"] = "Log in";
+}
+@{
+    Layout = null;
+}
+<head>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/WEB_APP_PROJECT.styles.css" asp-append-version="true" />
+</head>
+
+<div class="row" style="justify-content:center; display:flex; margin-top:50px; align-content:center;">
+
+    <div class="col-6 col-md-4" style="display: flex; border-radius:15px; justify-content:center; background-color:floralwhite;">
+        <section style="text-align: center;">
+            <img src="https://menhouse.net/img/ib/Wlz5rLupyJ.png" class="img-fluid" style="width: 35%; margin-top:12.5px; margin-bottom:10px;">
+            <h1 style="text-align:center; font-family: Rockwell, sans-serif;">Login</h1>
+            <form id="account" method="post">
+                <hr />
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-floating">
+                    <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" style="border-radius: 15px; margin-bottom:5px;" />
+                    <label asp-for="Input.Email" class="form-label"></label>
+                    <span asp-validation-for="Input.Email" class="text-danger"></span>
+                </div>
+                <div class="form-floating">
+                    <input asp-for="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" style="border-radius: 15px; margin-bottom:5px;" />
+                    <label asp-for="Input.Password" class="form-label"></label>
+                    <span asp-validation-for="Input.Password" class="text-danger"></span>
+                </div>
+                <div>
+                    <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-primary" style="margin-top:5px; border-radius:15px; background-color:#442819; border:none;">Log in</button>
+                </div>
+                <div>
+
+                    <p style="text-align:center; margin-top:8px;">
+                        <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl" style="color: gray;">Register as a new user</a>
+
+
+                    </p>
+
+
+                </div>
+            </form>
+        </section>
+    </div>
+
+</div>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

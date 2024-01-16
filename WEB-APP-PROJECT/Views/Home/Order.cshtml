@@ -1,0 +1,152 @@
+﻿@model IEnumerable<WEB_APP_PROJECT.Models.Order>;
+@{
+    ViewData["Title"] = "Order";
+    Layout = null;
+    @using Microsoft.AspNetCore.Identity
+    @inject SignInManager<IdentityUser> SignInManager
+
+    @inject UserManager<IdentityUser> UserManager
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/WEB_APP_PROJECT.styles.css" asp-append-version="true" />
+}
+
+
+<header>
+    
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/WEB_APP_PROJECT.styles.css" asp-append-version="true" />
+
+    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3 ">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Hiw Khao</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                <ul class="navbar-nav flex-grow-1">
+                    @if (Model.Any() == false || ViewData["UserState"].ToString() != "ผู้ค้า")
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                        </li>
+                    }
+
+                    @if (@ViewData["UserState"].ToString() == "ผู้ค้า")
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" 
+                            asp-controller="Home" 
+                            asp-action="UpdateRider"
+                            asp-route-count="plus"
+                            asp-route-FoodShopName=@ViewData["FoodShopName"]
+                            >ChoosePage</a>
+                        </li>
+                    }
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Order" asp-route-FoodShopName="@ViewData["FoodShopName"]">Order</a>
+                    </li>
+                    
+                </ul>
+                <ul class="navbar-nav">
+                    @if (SignInManager.IsSignedIn(User))
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity?.Name!</a>
+                        </li>
+                        <li class="nav-item">
+                            <form class="form-inline" style="margin-bottom:0px" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                                <button type="submit" class="nav-link btn btn-link text-dark">Logout</button>
+                            </form>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a>
+                        </li>
+                    }
+                </ul>
+                
+            </div>
+        </div>
+    </nav>
+
+
+
+</header>
+<script>
+    function confirmOrder(orderId) {
+        var card = document.getElementById("card-" + orderId);
+        card.style.display = "none";
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "/Order/ConfirmOrder?orderId=" + orderId, true);
+        xhr.onreadystatechange = function () {
+            if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+                console.log("Order " + orderId + " is confirmed.");
+            }
+        };
+        xhr.send();
+    }
+</script>
+
+<div class="w-100 d-flex flex-wrap justify-content-center">
+    
+    
+    @foreach (var tmp in Model)
+    { if (@tmp.status == "in process")
+        {
+            <div id="card-@tmp.OrderId" class="card mb-3 mx-3" style="width:16rem;">
+                <div class="card-body">
+                    <h4 class="card-title"> @tmp.FoodShopName</h4>
+                    <p class="card-text">
+                        ลูกค้า : @tmp.userName<br>
+                        เบอร์ลูกค้า : @tmp.callUser <br>
+                        เมนู : @tmp.menu<br>
+                        จำนวน : @tmp.amount<br>
+                    </p>
+                    @if (@ViewData["UserState"].ToString() != "ผู้ค้า")
+                    {
+                        <a asp-controller="Home"
+               asp-action="confirmOrder"
+               asp-route-Orderid=@tmp.OrderId
+               asp-route-FoodShopName=@tmp.FoodShopName
+                           class="btn btn-success">ยืนยันการรับ</a>
+                    }
+                </div>
+                </div>
+                
+        }
+        else
+        {
+            if (@ViewData["UserState"].ToString() == "ผู้เสพ")
+            {
+                <div id="card-@tmp.OrderId" class="card mb-3 mx-3" style="width:16rem;">
+                    <div class="card-body">
+                        <h4 class="card-title"> @tmp.FoodShopName</h4>
+                        <p class="card-text">
+                            ลูกค้า : @tmp.userName<br>
+                            เบอร์ลูกค้า : @tmp.callUser <br>
+                            เมนู : @tmp.menu<br>
+                            จำนวน : @tmp.amount<br>
+                        </p>
+                        
+                        <a asp-controller="Home"
+               asp-action="confirmOrder"
+               asp-route-Orderid=@tmp.OrderId
+               asp-route-FoodShopName=@tmp.FoodShopName
+                           class="btn btn-danger">ยกเลิกorder</a>
+                        
+
+                    </div>
+                </div>
+            }
+        }
+
+    }
+    </div>

@@ -1,0 +1,37 @@
+﻿@model IEnumerable<WEB_APP_PROJECT.Models.FoodCourt>;
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+<div class="w-100 d-flex flex-wrap justify-content-around">
+
+    @foreach (var FC in Model)
+    {
+        <div class="card mb-3 mx-3" style="width:26rem">
+            <img src=@FC.FoodShopImg class="card-img-top"/>
+            @*<img src="https://menhouse.net/img/ib/wqZ9sn6BqZ.png" class="card-img-top" />*@
+            <div class="card-body">
+                <h4 class="card-title">@FC.FoodShopName</h4>
+                <p class="card-text">
+                    เบอร์ติดต่อ : @FC.ShopContact              <br>
+                    เมนูแนะนำ : @FC.FoodRecommened <br>
+                    @if (@FC.RiderCount == null)
+                    {
+                        <span>
+                            จำนวนผู้รับฝาก: 0 คน
+                        </span>
+                    }
+                    else
+                    {
+                        <span>
+                            จำนวนผู้รับฝาก : @FC.RiderCount คน
+                        </span>
+                         
+                    }
+                   
+                </p>
+                <a href="Ask?FoodShopName=@FC.FoodShopName" class="btn btn-primary">หิวก็กด อยากอดก็ข้าม</a>
+            </div>
+        </div>
+    }
+</div>

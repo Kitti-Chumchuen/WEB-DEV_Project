@@ -1,0 +1,50 @@
+﻿@page
+@model RegisterModel
+@{
+    ViewData["Title"] = "Register";
+}
+@{
+    Layout = null;
+}
+<head>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/WEB_APP_PROJECT.styles.css" asp-append-version="true" />
+</head>
+
+<div class="row" style="justify-content:center; display:flex; margin-top:50px">
+    <div class="col-6 col-md-4" style="display: flex;  border-radius:15px; background-color:floralwhite; justify-content:center; text-align:center;">
+
+        <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+            <img src="https://menhouse.net/img/ib/Wlz5rLupyJ.png" class="img-fluid" style="width: 35%; margin-top:12.5px; margin-bottom:10px;">
+            <h1 style="text-align:center; font-family: Rockwell, sans-serif;">Register</h1>
+            <hr />
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-floating">
+                <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" style="border-radius: 15px; margin-bottom:5px;" />
+                <label asp-for="Input.Email"></label>
+                <span asp-validation-for="Input.Email" class="text-danger"></span>
+            </div>
+            <div class="form-floating">
+                <input asp-for="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" style="border-radius: 15px; margin-bottom:5px;" />
+                <label asp-for="Input.Password"></label>
+                <span asp-validation-for="Input.Password" class="text-danger"></span>
+            </div>
+            <div class="form-floating">
+                <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" style="border-radius: 15px; margin-bottom:5px;" />
+                <label asp-for="Input.ConfirmPassword"></label>
+                <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+            </div>
+            <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary" style="margin-top:17px; border-radius:15px; background-color:#442819; border:none;">Register</button>
+
+            <p style="text-align:center; margin-top:8px;">
+                <a asp-page="./Lgin" asp-route-returnUrl="@Model.ReturnUrl " style="color: gray;">Already have an account? Login</a>
+
+            </p>
+        </form>
+    </div>
+
+</div>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

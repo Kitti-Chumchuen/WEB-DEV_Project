@@ -1,0 +1,55 @@
+﻿@model Order;
+@{
+    ViewData["Title"] = "User";
+}
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+@{
+    var user = await UserManager.GetUserAsync(User);
+    var phoneNumber = await UserManager.GetPhoneNumberAsync(user);
+}
+@if (!string.IsNullOrEmpty(phoneNumber))
+{
+    <p>Phone Number: @phoneNumber</p>
+}
+
+<div class="card" style="padding:1cm 1cm 1cm 1cm; background-color:#fff9ea;">
+    <form method="post" asp-controller="Home" asp-action="BuiltOrder">
+        <input type="hidden" asp-for="userName" value="@User.Identity.Name" />
+        <input type="hidden" asp-for="FoodShopName" value="@ViewData["FoodShopName"]" />
+        <input type="hidden" asp-for="status" value="wait" />
+        <input type="hidden" asp-for="callUser" value="@phoneNumber" />
+        <a href=@ViewData["ShopSrc"] target="_blank">
+            <img style="height:5cm;" src=@ViewData["ShopSrc"] />
+        </a>
+        <div class="form-group">
+            <label asp-for="menu"></label>
+            <input type="text" asp-for="menu" name="menu" class="form-control"></input>
+            <small id="menuHelp" class="form-text text-muted">สามารถใส่หมายเหตุ ตามหลังชื่อเมนูได้เลย</small>
+        </div>
+        <div class="from-group">
+            <div class="mb-3" style="width:2cm;">
+                <label asp-for="amount"></label>
+                <select asp-for="amount" name="amount" class="form-select">
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                    <option>6</option>
+                    <option>7</option>
+                    <option>8</option>
+                    <option>9</option>
+                    <option>10</option>
+                </select>
+            </div>
+        </div>
+        
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+
+
+

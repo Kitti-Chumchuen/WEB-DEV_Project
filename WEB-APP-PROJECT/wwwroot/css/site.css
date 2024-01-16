@@ -1,0 +1,20 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+    margin-bottom: 60px;
+    background-image: url("https://menhouse.net/img/ib/bC9pqQ2OS6.png"), linear-gradient(#d5a357, #ffd9a4);
+    background-size: cover;
+}
